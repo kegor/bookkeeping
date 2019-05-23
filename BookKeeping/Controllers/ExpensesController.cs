@@ -26,6 +26,12 @@ namespace BookKeeping.Controllers
             return View(db.Expense.Where(x => x.Category.Equals(categoryName)).ToList());
         }
 
+        // GET: Expenses by month
+        public ActionResult IndexByMonth(int month)
+        {
+            return View(db.Expense.Where(x => x.Date.Month == month).ToList());
+        }
+
         // GET: Expenses/Details/5
         public ActionResult Details(int? id)
         {
