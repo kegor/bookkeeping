@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F4A97BF8-B494-4750-B9E9-B253D5930008}</ProjectGuid>
+    <ProjectGuid>{C1724FCE-BD78-451C-AE54-C4235E1D3E94}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DataAccess</RootNamespace>
@@ -50,53 +50,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Expense.cs">
-      <DependentUpon>ExpenseModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ExpenseModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ExpenseModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ExpenseModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ExpenseModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ExpenseModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ExpenseModel.edmx</DependentUpon>
-    </Compile>
+    <Compile Include="Category.cs" />
+    <Compile Include="Expense.cs" />
+    <Compile Include="ExpenseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="ExpenseModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ExpenseModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.Config" />
-    <None Include="ExpenseModel.edmx.diagram">
-      <DependentUpon>ExpenseModel.edmx</DependentUpon>
-    </None>
+    <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ExpenseModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ExpenseModel.Context.cs</LastGenOutput>
-      <DependentUpon>ExpenseModel.edmx</DependentUpon>
-    </Content>
-    <Content Include="ExpenseModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ExpenseModel.edmx</DependentUpon>
-      <LastGenOutput>ExpenseModel.cs</LastGenOutput>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

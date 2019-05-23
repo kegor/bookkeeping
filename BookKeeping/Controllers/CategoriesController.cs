@@ -10,112 +10,107 @@ using DataAccess;
 
 namespace BookKeeping.Controllers
 {
-    public class ExpensesController : Controller
+    public class CategoriesController : Controller
     {
         private ExpenseModel db = new ExpenseModel();
 
-        // GET: Expenses
+        // GET: Categories
         public ActionResult Index()
         {
-            var expense = db.Expense.Include(e => e.Category);
-            return View(expense.ToList());
+            return View(db.Category.ToList());
         }
 
-        // GET: Expenses/Details/5
+        // GET: Categories/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Expense expense = db.Expense.Find(id);
-            if (expense == null)
+            Category category = db.Category.Find(id);
+            if (category == null)
             {
                 return HttpNotFound();
             }
-            return View(expense);
+            return View(category);
         }
 
-        // GET: Expenses/Create
+        // GET: Categories/Create
         public ActionResult Create()
         {
-            ViewBag.CategoryID = new SelectList(db.Category, "ID", "Name");
             return View();
         }
 
-        // POST: Expenses/Create
+        // POST: Categories/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,CategoryID,Sum,Date")] Expense expense)
+        public ActionResult Create([Bind(Include = "ID,Name")] Category category)
         {
             if (ModelState.IsValid)
             {
-                db.Expense.Add(expense);
+                db.Category.Add(category);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CategoryID = new SelectList(db.Category, "ID", "Name", expense.CategoryID);
-            return View(expense);
+            return View(category);
         }
 
-        // GET: Expenses/Edit/5
+        // GET: Categories/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Expense expense = db.Expense.Find(id);
-            if (expense == null)
+            Category category = db.Category.Find(id);
+            if (category == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.CategoryID = new SelectList(db.Category, "ID", "Name", expense.CategoryID);
-            return View(expense);
+            return View(category);
         }
 
-        // POST: Expenses/Edit/5
+        // POST: Categories/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,CategoryID,Sum,Date")] Expense expense)
+        public ActionResult Edit([Bind(Include = "ID,Name")] Category category)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(expense).State = EntityState.Modified;
+                db.Entry(category).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CategoryID = new SelectList(db.Category, "ID", "Name", expense.CategoryID);
-            return View(expense);
+            return View(category);
         }
 
-        // GET: Expenses/Delete/5
+        // GET: Categories/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Expense expense = db.Expense.Find(id);
-            if (expense == null)
+            Category category = db.Category.Find(id);
+            if (category == null)
             {
                 return HttpNotFound();
             }
-            return View(expense);
+            return View(category);
         }
 
-        // POST: Expenses/Delete/5
+        // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Expense expense = db.Expense.Find(id);
-            db.Expense.Remove(expense);
+            Category category = db.Category.Find(id);
+            db.Category.Remove(category);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
