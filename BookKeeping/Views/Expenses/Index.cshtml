@@ -1,46 +1,123 @@
 ﻿@model IEnumerable<DataAccess.Expense>
+@using GridMvc.Html
+
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "All expenses";
 }
 
-<h2>Index</h2>
+<h2>All expenses</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Category)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Sum)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Date)
-        </th>
-        <th></th>
-    </tr>
+<!DOCTYPE html>
 
-@foreach (var item in Model) {
-    var dateString = item.Date.ToShortDateString();
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Category.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Sum)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => dateString)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/gridmvc.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Scripts/jquery-3.3.1.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/gridmvc.min.js")"></script>
+    <style>
+        select {
+            border: 1px solid #ccc;
+            vertical-align: top;
+            height: 26px;
+        }
 
-</table>
+        input, select {
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .padding-bottom {
+            padding-bottom: 10px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            var total = 0.00;
+
+            $("tr.grid-row").each(function () {
+                var tr = $(this);
+                var rows = $(tr).children();
+                var amount = rows[1].innerHTML;
+                amount = parseFloat(amount);
+
+                total += amount;
+            });
+
+            total = total.toFixed(4);
+            var trTotals = "<tr><td style='font-weight:bold;'>Total: </td><td style='font-weight:bold;'>" + total +
+                "</td><td></td><td></td></td><td></td><td></tr>";
+            $("tr.grid-row:last").after(trTotals);
+        });
+
+        $.ajax({
+            url: '/Categories/IndexData',
+            type: 'GET',
+            cache: false,
+            dataType: 'json',
+            success: function (json) {
+                $.each(json, function (i, value) {
+                    $('<option></option>', { text: value.Name }).attr('value', value.ID).appendTo('#select');
+                });
+                $("#select").prepend("<option value=''>--Category--</option>").val('');
+            }
+        });
+    </script>
+    <title>All expenses</title>
+</head>
+<body>
+    <div>
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+
+        <div class="padding-bottom">
+            <p>Filter and summarize by:</p>
+            <form name="filters" action="/Expenses/filter">
+                <select name="Category" id="select"></select> or/and
+                <select name="Month">
+                    <option value="">--Month--</option>
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
+
+        @Html.Grid(Model).Columns(columns =>
+        {
+            columns.Add(c => c.Category.Name).Titled("Category");
+            columns.Add(c => c.Sum).Titled("Sum");
+            columns.Add(c => c.Date).Format("{0:MM/dd/yyyy}").Titled("Date");
+            columns.Add()
+                .Encoded(false)
+                .Sanitized(false)
+                .SetWidth(30)
+                .RenderValueAs(c => Html.ActionLink("Edit", "Edit", new {id = c.ID}));
+            columns.Add()
+                .Encoded(false)
+                .Sanitized(false)
+                .SetWidth(30)
+                .RenderValueAs(c => Html.ActionLink("Details", "Details", new {id = c.ID}));
+            columns.Add()
+                .Encoded(false)
+                .Sanitized(false)
+                .SetWidth(30)
+                .RenderValueAs(c => Html.ActionLink("Delete", "Delete", new {id = c.ID}));
+        }).WithPaging(10).Sortable(true)
+    </div>
+</body>
+</html>

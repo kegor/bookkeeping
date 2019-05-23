@@ -128,5 +128,22 @@ namespace BookKeeping.Controllers
             }
             base.Dispose(disposing);
         }
+
+        public ActionResult Filter(int? category, int? month)
+        {
+            var expenses = db.Expense.Include(e => e.Category);
+
+            if (category != null)
+            {
+                expenses = expenses.Where(x => x.Category.ID == category);
+            }
+
+            if (month != null)
+            {
+                expenses = expenses.Where(x => x.Date.Month == month);
+            }
+
+            return View("Index", expenses.ToList());
+        }
     }
 }

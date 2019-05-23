@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using DataAccess;
+using Microsoft.Ajax.Utilities;
 
 namespace BookKeeping.Controllers
 {
@@ -18,6 +19,11 @@ namespace BookKeeping.Controllers
         public ActionResult Index()
         {
             return View(db.Category.ToList());
+        }
+
+        public ActionResult IndexData()
+        {
+            return Json(db.Category.ToList().Select(x => new {x.ID, x.Name}), JsonRequestBehavior.AllowGet);
         }
 
         // GET: Categories/Details/5
