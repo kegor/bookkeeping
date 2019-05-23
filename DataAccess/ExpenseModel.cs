@@ -28,7 +28,7 @@ namespace DataAccess
 
             modelBuilder.Entity<Expense>()
                 .Property(e => e.Sum)
-                .HasPrecision(10, 4);
+                .HasPrecision(10, 2);
         }
     }
 }
