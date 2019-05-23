@@ -1,4 +1,5 @@
-﻿@model IEnumerable<DataAccess.Expense>
+﻿@using System.Globalization
+@model IEnumerable<DataAccess.Expense>
 
 @{
     ViewBag.Title = "Expenses";
@@ -43,3 +44,7 @@
 }
 
 </table>
+
+<p>
+    <b>Total</b>: @Model.Sum(x => x.Sum).ToString(CultureInfo.InvariantCulture)
+</p>
